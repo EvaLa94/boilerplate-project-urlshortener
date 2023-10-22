@@ -1,4 +1,4 @@
-const shortUrls = [];
+const { ShortUrl } = require("./schema");
 
 validateUrl = (urlString) => {
   try {
@@ -13,9 +13,17 @@ validateUrl = (urlString) => {
   }
 };
 
-filterResults = (type, data) => {
-  const result = shortUrls.filter((el) => el[type] === data)[0];
-  return result ? result : false;
+createNewRecord = async (url) => {
+  let count = await ShortUrl.count();
+
+  const newShortUrl = new ShortUrl({
+    original_url: url.href,
+    short_url: ++count,
+  });
+
+  newShortUrl.save();
+
+  return newShortUrl;
 };
 
-module.exports = { validateUrl, filterResults, shortUrls };
+module.exports = { validateUrl, createNewRecord };
