@@ -2,7 +2,12 @@ const shortUrls = [];
 
 validateUrl = (urlString) => {
   try {
-    return new URL(urlString);
+    const validateUrl = new URL(urlString);
+    if (validateUrl.protocol === "https:" || validateUrl.protocol === "http:") {
+      return validateUrl;
+    } else {
+      throw err;
+    }
   } catch {
     return false;
   }
